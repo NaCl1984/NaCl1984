@@ -14,6 +14,7 @@ botScore = 0
 userScore = 0
 pongUrl = 'https://earnest-snickerdoodle-349510.netlify.app/'
 
+#обработчик команды для запуска понга
 @bot.message_handler(commands=["pong"])
 async def sendPongLink(message):
     global pongUrl
@@ -24,6 +25,7 @@ async def sendPongLink(message):
     wb.save('dataBase.xlsx')
     await bot.send_game(message.chat.id, "pong", reply_markup=keyboard)
 
+#обработчик команды для запуска камень ножницы бумага
 @bot.message_handler(commands=["rps"])
 async def rps(message):
     keyboard = types.InlineKeyboardMarkup()
@@ -37,18 +39,21 @@ async def rps(message):
     wb.save('dataBase.xlsx')
     await bot.reply_to(message, f"Играем до 3-х побед, вы ходите первым.", reply_markup=keyboard)
 
+#обраточик команды help
 @bot.message_handler(commands=["help"])
 async def help(message):
     sheet.append([message.from_user.id, message.from_user.username, message.text])
     wb.save('dataBase.xlsx')
-    await bot.reply_to(message, "/start - Выводит приветственное сообщение\n/help - Выводит данное сообщение\n/rps - Запускает игру камень ножницы бумага\n"
-                          "/pong - запуск классической игры pong")
+    await bot.reply_to(message, "/start - Выводит приветственное сообщение\n/help - Выводит данное сообщение\n/rps - Запускает игру камень ножницы бумага\n/pong - запуск классической игры pong")
+
+#обраточик команды start
 @bot.message_handler(commands=["start"])
 async def send_welcome(message):
     sheet.append([message.from_user.id, message.from_user.username, message.text])
     wb.save('dataBase.xlsx')
     await bot.reply_to(message, "Привет! Я PlayGameBot. Со мной ты можешь играть в разные игры." )
 
+#обработчик нажатия кнопки запуска понга
 @bot.callback_query_handler(func=lambda call: call.message.content_type == "game")
 async def launch(call):
     global pongUrl
@@ -56,6 +61,7 @@ async def launch(call):
     wb.save('dataBase.xlsx')
     await bot.answer_callback_query(call.id, url=pongUrl)
 
+#обработчик нажатий кнопок с вариантами выбора в игре камень ножницы бумага
 @bot.callback_query_handler(func=lambda call: call.message.content_type != "game")
 async def rps(call):
     sheet.append([call.message.from_user.id, call.message.from_user.username, call.message.text])
