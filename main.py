@@ -9,10 +9,10 @@ import openpyxl
 wb = openpyxl.load_workbook("dataBase.xlsx")
 sheet = wb.active
 
-bot = AsyncTeleBot("Token")
+bot = AsyncTeleBot(open("token.txt", "r").readline())
 botScore = 0
 userScore = 0
-pongUrl = 'https://earnest-snickerdoodle-349510.netlify.app/'
+pongUrl = 'https://earnest-snickerdoodle-349510.netlify.app'
 
 #обработчик команды для запуска понга
 @bot.message_handler(commands=["pong"])
