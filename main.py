@@ -57,14 +57,12 @@ async def send_welcome(message):
 @bot.callback_query_handler(func=lambda call: call.message.content_type == "game")
 async def launch(call):
     global pongUrl
-    sheet.append([call.message.from_user.id, call.message.from_user.username, call.message.text])
     wb.save('dataBase.xlsx')
     await bot.answer_callback_query(call.id, url=pongUrl)
 
 #обработчик нажатий кнопок с вариантами выбора в игре камень ножницы бумага
 @bot.callback_query_handler(func=lambda call: call.message.content_type != "game")
 async def rps(call):
-    sheet.append([call.message.from_user.id, call.message.from_user.username, call.message.text])
     wb.save('dataBase.xlsx')
     global botScore
     global userScore
